@@ -19,6 +19,7 @@ OTHERS
 - Plastic / Rubber sphere ball 
 - Tiny breadboard
 - Header
+-Protoshield
 - Battery (two AA battery= 3V)
 
 Challenges
