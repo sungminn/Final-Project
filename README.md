@@ -1,4 +1,4 @@
-#INFRARED MOTION SENSING MOOD LIGHT FOR SLEEP & THROWABLE ALARM CLOCK
+# INFRARED MOTION SENSING MOOD LIGHT FOR SLEEP & THROWABLE ALARM CLOCK
 
 Summary
 - An infrared motion sensed mood light and a throwable alarm clock aiming at the concept of "sleep" is what we are going towards within this project. First, the throwable alarm clock contains a accelerometer, button, LED, and a simple audio as components that would fit inside a shell shaped as a ball. The alarm would be set with the button that calculates 2 hours per press. When the time runs out and the alarm goes off, LED light will light up as well as the audio. To turn it off, one would need to exceed a certain distance of x,y,z to turn off the alarm. In addition to our project, we have the motion sensing mood light that gets put under the bed that when it detects certain movement caught within the range, the light will turn on in a soft, relaxing color for a few minutes and turn off again. It's for the safety of people of all ages, to be moving in the dark when you were to wake up in the middle of the night to do certain things. 
