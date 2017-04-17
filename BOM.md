@@ -2,7 +2,7 @@ Item Name | Vendor/Source | Web link/URL (if applicable)
 
 - econoLED 12V FlexibleSMD 5050 RGB LED tape | Amazon | www.amazon.com 
 - 9V snap connector | Amazon | www.amazon.com
-- 8AA battery pack | Amazon | www. amazon.com
+- 8AA battery pack | Amazon | www.amazon.com
 - Industry Park Atmega328P Prototyping Prototype Shield ProtoShield | Amazon | www.amazon.com
 - Mini breadboard | Amazon | www.amazon.com
 - Darice 1105-89 Plastic Ball Ornament, 140mm, Clear | Amazon | www.amazon.com
