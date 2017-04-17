@@ -10,6 +10,7 @@
 - Button | Amazon | www.amazon.com (didn't get yet)
 - Speaker / Audio | Hybrid lab 
 - RGB LED | Hybrid lab
+- Infrared motion sensor | Amazon | www.amazon.com
 - Multiple AA battery | Amazon | www.amazon.com
 
 
