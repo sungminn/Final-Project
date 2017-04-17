@@ -1,4 +1,4 @@
-Item Name | Vendor/Source | Web link/URL (if applicable) 
+# Material List
 
 - econoLED 12V FlexibleSMD 5050 RGB LED tape | Amazon | www.amazon.com 
 - 9V snap connector | Amazon | www.amazon.com
