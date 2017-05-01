@@ -1,0 +1,417 @@
+#define NOTE_B0  31
+#define NOTE_C1  33
+#define NOTE_CS1 35
+#define NOTE_D1  37
+#define NOTE_DS1 39
+#define NOTE_E1  41
+#define NOTE_F1  44
+#define NOTE_FS1 46
+#define NOTE_G1  49
+#define NOTE_GS1 52
+#define NOTE_A1  55
+#define NOTE_AS1 58
+#define NOTE_B1  62
+#define NOTE_C2  65
+#define NOTE_CS2 69
+#define NOTE_D2  73
+#define NOTE_DS2 78
+#define NOTE_E2  82
+#define NOTE_F2  87
+#define NOTE_FS2 93
+#define NOTE_G2  98
+#define NOTE_GS2 104
+#define NOTE_A2  110
+#define NOTE_AS2 117
+#define NOTE_B2  123
+#define NOTE_C3  131
+#define NOTE_CS3 139
+#define NOTE_D3  147
+#define NOTE_DS3 156
+#define NOTE_E3  165
+#define NOTE_F3  175
+#define NOTE_FS3 185
+#define NOTE_G3  196
+#define NOTE_GS3 208
+#define NOTE_A3  220
+#define NOTE_AS3 233
+#define NOTE_B3  247
+#define NOTE_C4  262
+#define NOTE_CS4 277
+#define NOTE_D4  294
+#define NOTE_DS4 311
+#define NOTE_E4  330
+#define NOTE_F4  349
+#define NOTE_FS4 370
+#define NOTE_G4  392
+#define NOTE_GS4 415
+#define NOTE_A4  440
+#define NOTE_AS4 466
+#define NOTE_B4  494
+#define NOTE_C5  523
+#define NOTE_CS5 554
+#define NOTE_D5  587
+#define NOTE_DS5 622
+#define NOTE_E5  659
+#define NOTE_F5  698
+#define NOTE_FS5 740
+#define NOTE_G5  784
+#define NOTE_GS5 831
+#define NOTE_A5  880
+#define NOTE_AS5 932
+#define NOTE_B5  988
+#define NOTE_C6  1047
+#define NOTE_CS6 1109
+#define NOTE_D6  1175
+#define NOTE_DS6 1245
+#define NOTE_E6  1319
+#define NOTE_F6  1397
+#define NOTE_FS6 1480
+#define NOTE_G6  1568
+#define NOTE_GS6 1661
+#define NOTE_A6  1760
+#define NOTE_AS6 1865
+#define NOTE_B6  1976
+#define NOTE_C7  2093
+#define NOTE_CS7 2217
+#define NOTE_D7  2349
+#define NOTE_DS7 2489
+#define NOTE_E7  2637
+#define NOTE_F7  2794
+#define NOTE_FS7 2960
+#define NOTE_G7  3136
+#define NOTE_GS7 3322
+#define NOTE_A7  3520
+#define NOTE_AS7 3729
+#define NOTE_B7  3951
+#define NOTE_C8  4186
+#define NOTE_CS8 4435
+#define NOTE_D8  4699
+#define NOTE_DS8 4978
+const int groundpin = 18;             // analog input pin 4 -- ground
+const int powerpin = 19;              // analog input pin 5 -- voltage
+const int xpin = A3;                  // x-axis of the accelerometer
+const int ypin = A2;                  // y-axis
+const int zpin = A1;                  // z-axis (only on 3-axis models)
+
+
+int counter = 0;
+
+
+const int pinButton = 2; // Push-button pin
+unsigned long triggertime = 0;
+int buttonState = 0;
+
+//Setup the timing variables
+long onInterval = 250;
+long offInterval = 250;
+long interval = onInterval;
+
+//Track the last time the time was updated
+long lastMillis = millis();
+
+//Variable to track where in the pattern we are
+int flashPatternStepper = 0;
+//Variable to track which pattern is being used
+int flashPatternSelect = 0;
+
+//Array of possible flash patterns
+int flashPatterns [2][4] = {{1, 0, 2, 0},
+  {1, 2, 1, 2}
+};
+int arrayLength = 4;
+
+//Variables to track color selection
+char color1 = 'r';
+char color2 = 'b';
+
+//Pins for the RGB LED
+int redPin = 9;
+int greenPin = 10;
+int bluePin = 11;
+
+
+
+#define melodyPin 3
+//Mario main theme melody
+int melody[] = {
+  NOTE_E7, NOTE_E7, 0, NOTE_E7,
+  0, NOTE_C7, NOTE_E7, 0,
+  NOTE_G7, 0, 0,  0,
+  NOTE_G6, 0, 0, 0,
+
+  NOTE_C7, 0, 0, NOTE_G6,
+  0, 0, NOTE_E6, 0,
+  0, NOTE_A6, 0, NOTE_B6,
+  0, NOTE_AS6, NOTE_A6, 0,
+
+  NOTE_G6, NOTE_E7, NOTE_G7,
+  NOTE_A7, 0, NOTE_F7, NOTE_G7,
+  0, NOTE_E7, 0, NOTE_C7,
+  NOTE_D7, NOTE_B6, 0, 0,
+
+  NOTE_C7, 0, 0, NOTE_G6,
+  0, 0, NOTE_E6, 0,
+  0, NOTE_A6, 0, NOTE_B6,
+  0, NOTE_AS6, NOTE_A6, 0,
+
+  NOTE_G6, NOTE_E7, NOTE_G7,
+  NOTE_A7, 0, NOTE_F7, NOTE_G7,
+  0, NOTE_E7, 0, NOTE_C7,
+  NOTE_D7, NOTE_B6, 0, 0
+};
+//Mario main them tempo
+int tempo[] = {
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+
+  9, 9, 9,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+
+  9, 9, 9,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+  12, 12, 12, 12,
+};
+const int buzzerPin = 8;
+const int ledPin1 = 12;
+const int ledPin2 = 13;
+
+int pitchIndex = 0;
+unsigned long lastPitch = 0;
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin1, OUTPUT);
+  pinMode(ledPin2, OUTPUT);
+  // put your setup code here, to run once:
+
+  Serial.begin(250000); // Opens Serial communication
+
+  pinMode(pinButton, INPUT); // Defines pinSwi as an input
+
+  pinMode(groundpin, OUTPUT);
+  pinMode(powerpin, OUTPUT);
+  digitalWrite(groundpin, LOW);
+  digitalWrite(powerpin, HIGH);
+
+}
+
+
+void handleLEDs()
+{
+  //Check to see if lights should be on or off
+  if (flashPatterns[flashPatternSelect][flashPatternStepper] == 0)
+  {
+    interval = offInterval;
+  }
+  else
+  {
+    interval = onInterval;
+  }
+
+  //Check if we need to advance flashPatternStepper to the next place in the sequence
+  if (millis() - lastMillis > interval)
+  {
+    lastMillis = millis();
+    flashPatternStepper++;
+
+    if (flashPatternStepper > arrayLength - 1)
+    {
+      flashPatternStepper = 0;
+    }
+  }
+
+  //colorSelect decides which LED Pins should be active, if any
+  colorSelect();
+}
+
+//Control the colors
+void colorSelect()
+{
+  char colorChoice;
+
+  ///Set colorChoice based on where we are in the sequence
+  switch (flashPatterns[flashPatternSelect][flashPatternStepper])
+  {
+    case 1:
+      colorChoice = color1;
+      break;
+
+    case 2:
+      colorChoice = color2;
+      break;
+
+    case 0:
+      colorChoice = 'o';
+      break;
+  }
+
+  //Actually turn on/off the LED pin(s)
+  switch (colorChoice)
+  {
+    case 'y':
+      digitalWrite(redPin, LOW);
+      digitalWrite(greenPin, LOW);
+      digitalWrite(bluePin, HIGH);
+      break;
+
+    case 'w':
+      digitalWrite(redPin, LOW);
+      digitalWrite(greenPin, LOW);
+      digitalWrite(bluePin, LOW);
+      break;
+
+    case 'r':
+      digitalWrite(redPin, LOW);
+      digitalWrite(greenPin, HIGH);
+      digitalWrite(bluePin, HIGH);
+      break;
+
+    case 'g':
+      digitalWrite(redPin, HIGH);
+      digitalWrite(greenPin, LOW);
+      digitalWrite(bluePin, HIGH);
+      break;
+
+    case 'b':
+      digitalWrite(redPin, HIGH);
+      digitalWrite(greenPin, HIGH);
+      digitalWrite(bluePin, LOW);
+      break;
+
+    case 'p':
+      digitalWrite(redPin, LOW);
+      digitalWrite(greenPin, HIGH);
+      digitalWrite(bluePin, LOW);
+      break;
+
+    case 'c':
+      digitalWrite(redPin, HIGH);
+      digitalWrite(greenPin, LOW);
+      digitalWrite(bluePin, LOW);
+      break;
+
+    case 'o':
+      digitalWrite(redPin, HIGH);
+      digitalWrite(greenPin, HIGH);
+      digitalWrite(bluePin, HIGH);
+      break;
+  }
+}
+
+boolean wasPressed;
+boolean isAlarmState = false;
+boolean isAlarmOff = true;
+
+int zThreshold = 600;
+int yThreshold = 460;
+
+void loop() {
+
+  unsigned long t = millis();
+  boolean isPressed = false;
+
+  int z = analogRead(zpin) ;
+  int y = analogRead(ypin) ;
+
+  // print the sensor values:
+  if (z >= zThreshold || y >= yThreshold) {
+    Serial.println("work!");
+  }
+  Serial.print(analogRead(xpin));
+  // print a tab between values:
+  Serial.print("\t");
+  Serial.print(y);
+  // print a tab between values:
+  Serial.print("\t");
+  Serial.print(z);
+  Serial.println("\t");
+  delay(100);
+  Serial.print("time:");
+  Serial.println(triggertime);
+  Serial.println(t );
+
+
+  if (digitalRead(pinButton))
+  {
+    isPressed = true;
+  }
+
+  if (isAlarmOff)
+  {
+    noTone(8);
+    digitalWrite(redPin, LOW);
+    digitalWrite(greenPin, LOW);
+    digitalWrite(bluePin, LOW);
+
+    if ( isPressed && ! wasPressed) {
+      triggertime = t + 10000;
+      isAlarmOff = false;
+      isAlarmState = false;
+    }
+  }
+
+  else if (isAlarmState)
+  {
+    if (millis() > lastPitch + 2000 / tempo[pitchIndex]) // tone code here
+    {
+      pitchIndex += 1;
+      if (melody[pitchIndex] == 0)
+      {
+        noTone(8);
+      } else
+      {
+        tone(8, melody[pitchIndex]);
+      }
+      lastPitch = millis();
+    }
+
+    if ( pitchIndex >= 78)
+    {
+      pitchIndex = 1;
+    }
+
+    handleLEDs();// LED code here
+    if (z >= zThreshold || y >= yThreshold) {
+      Serial.print("work!!!");
+      // or whatever your trigger conditions are
+      isAlarmState = false;
+      isAlarmOff = true;
+    }
+  } else
+  {
+
+    if ( isPressed && ! wasPressed)
+    {
+      triggertime += 10000;
+      Serial.print("time:");
+      Serial.print(triggertime);
+    }
+
+    // timing code here
+    if (t > triggertime && triggertime > 0)
+    { // check time has expired
+      isAlarmState = true;
+    }
+
+  }
+  wasPressed = isPressed;// button code here
+
+}
